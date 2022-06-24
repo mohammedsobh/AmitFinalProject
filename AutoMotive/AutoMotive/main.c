@@ -51,7 +51,7 @@ void SystemInit(void)
 	Timer_Start(&Motor1PWMTimer);
 	Timer_Start(&Motor2PWMTimer);
 	LCDInit(&Lcd1);
-	UltraSonic_Init();
+	UltraSonic_init();
 	ServoInit();
 	IRInit();
 	Motor_init();
@@ -66,7 +66,7 @@ int main(void)
 	int speed = 70 , count = 0;
     while (1) 
     {
-		if(UltraSonicDistance()>20)
+		if(UltraSonic_Distance()>20)
 		{
 			LcdSetCursor(&Lcd1,0,0);
 			writeString(&Lcd1,"Distance > 20 cm");
@@ -74,7 +74,7 @@ int main(void)
 			writeString(&Lcd1,"move foreword");
 			Motor_foroword();
 		} 
-		else if(UltraSonicDistance()>5)
+		else if(UltraSonic_Distance()>5)
 		{
 			LcdSetCursor(&Lcd1,0,0);
 			writeString(&Lcd1,"Distance < 20 cm");
@@ -83,7 +83,7 @@ int main(void)
 			Motor_Stop();
 			Motor_Speet(speed);
 			ServoGoToAngle(-90);
-			if (UltraSonicDistance()>20)
+			if (UltraSonic_Distance()>20)
 			{
 				Motor_Left();
 				_delay_ms(500);
@@ -92,7 +92,7 @@ int main(void)
 			else
 			{
 				ServoGoToAngle(90);
-				if (UltraSonicDistance()>20)
+				if (UltraSonic_Distance()>20)
 				{
 					Motor_Right();
 					_delay_ms(500);
@@ -124,7 +124,7 @@ int main(void)
 				Motor_Speet(speed);
 				Motor_backword();
 				ServoGoToAngle(-90);
-				if (UltraSonicDistance()>20)
+				if (UltraSonic_Distance()>20)
 				{
 					Motor_Left();
 					_delay_ms(500);
@@ -134,7 +134,7 @@ int main(void)
 				else
 				{
 					ServoGoToAngle(90);
-					if (UltraSonicDistance()>20)
+					if (UltraSonic_Distance()>20)
 					{
 						Motor_Right();
 						_delay_ms(500);

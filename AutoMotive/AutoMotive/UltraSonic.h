@@ -2,30 +2,34 @@
  * UltraSonic.h
  *
  * Created: 6/11/2022 3:09:52 PM
- *  Author: eng_s
+ *  Author: nada
  */ 
 #include "STD_types.h"
 
 #ifndef ULTRASONIC_H_
 #define ULTRASONIC_H_
 
-#include<avr/io.h>
+#ifndef F_CPU
+#define F_CPU 16000000UL // 8 MHz clock speed
+#endif
+
+#include "Atmega32PortsRegister.h"
 #include <avr/interrupt.h>
-#include<string.h>
-#include <stdlib.h>
-#define F_CPU 8000000UL
 #include <util/delay.h>
-#include "timer/timer.h"
+#include "Timer.h"
 
-#define   TRIGER_DDR    DDRD
-#define   ECHO_DDR      DDRD
-#define   TRIGER_PORT   PORTD
-#define   ECHO_PULLUP   PORTD
-#define   TRIGER        0
-#define   ECHO          3
 
-void ultrasonic_init(void);
-void enable_ex_interrupt(void);
-void ultrasonic_triger(void);
+#define   TRIGER_PORT   DIO_PORTA
+#define   ECHO_PULLUP   DIO_PORTD
+#define   TRIGER        DIO_PIN_0
+#define   ECHO          DIO_PIN_6
+
+void UltraSonic_init(void);
+
+void UltraSonic_triger(void);
+
+void UltraSonic_SetCaptureEdge(Uint8);
+
+Float64 UltraSonic_Distance(void);
 
 #endif /* ULTRASONIC_H_ */

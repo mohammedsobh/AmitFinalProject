@@ -34,9 +34,15 @@
 #define TIMER_COMPARETOR_CLR				2
 #define TIMER_COMPARETOR_SET				3
 
+#define TIMER_ICP_FALG					1
+#define TIMER_OVERFLOW_FALG				2
+
 #define TIMER1_COMPARETOR_A				0
 #define TIMER1_COMPARETOR_B				1
 #define TIMER1_INPUT_CAPTURE			2
+
+#define TIMER_RISING_CAPTURE			1
+#define TIMER_FALLING_CAPTURE			0
 
 #define TimerPrescaler_0				1
 #define TimerPrescaler_8				8
@@ -45,6 +51,11 @@
 #define TimerPrescaler_128				128
 #define TimerPrescaler_256				256
 #define TimerPrescaler_1024				1024
+
+#define TIMER1_Input_Capture_Interrupt_En				1				
+#define TIMER1_Output_CompareA_Match_Interrupt_En		2
+#define TIMER1_Output_CompareB_Match_Interrupt_En		3
+#define TIMER1_Overflow_Interrupt_Enable				4
 
 
 
@@ -55,6 +66,12 @@ void Timer_Start(TimerControl*);
 void Timer_Stop(TimerControl*);
 
 void Timer_SetDelay(TimerControl*,Uint32 Delay_Ms);
+
+void Timer_SetINTERUPPT(TimerControl* TimerC,Uint32 InterruptSelect);
+
+void Timer_SetRisingFallingEdge(TimerControl* TimerC,Uint8 Rising_Falling);
+
+void Timer_ClearFlage(TimerControl* TimerC,Uint8 Flag);
 
 void SetCallBack(TimerControl*,void (*P_Fn)(void));
 

@@ -2,7 +2,7 @@
  * Servo.h
  *
  * Created: 6/11/2022 3:10:20 PM
- *  Author: eng_s
+ *  Author: nada
  */
 #ifndef F_CPU
 #define F_CPU 16000000UL // 8 MHz clock speed

@@ -124,9 +124,11 @@ void Timer_Init(TimerControl* TimerC)
 		{
 			set_bit(TIMSK,2);
 			TCCR1A = 0X00;
+			
 		}
 		else if (TimerC -> TimerMode == TIMER_CTC_MODE)
 		{
+			set_bit(TIMSK,5);
 			
 	
 		}
@@ -181,6 +183,7 @@ void Timer_Init(TimerControl* TimerC)
 					set_bit(TCCR1A,6);
 					set_bit(TCCR1A,7);
 				}
+				
 // 				else{
 // 					#error "Wrong Timer Comparetor Mode"
 // 				}
@@ -245,7 +248,8 @@ void Timer_Init(TimerControl* TimerC)
 // 				else{
 // 					#error "Wrong Timer Comparetor Mode"
 	// 				}
-			}
+		}
+		
 // 			else{
 // 				#error "Wrong Timer Comparetor Selected"
 	// 			}
@@ -370,20 +374,67 @@ void Timer_SetDelay(TimerControl* TimerC,Uint32 Delay_Ms)
 	
 	N_OVFlows++;
 }
+void Timer_SetINTERUPPT(TimerControl* TimerC,Uint32 InterruptSelect)
+{
+	if (TimerC -> TimerSelect == TIMER1)
+	{
+		if (TimerC -> TimerInterruptSelect == TIMER1_Input_Capture_Interrupt_En)
+		{
+			set_bit(TIMSK,5);
+		} 
+		else if (TimerC -> TimerInterruptSelect == TIMER1_Output_CompareA_Match_Interrupt_En)
+		{
+			set_bit(TIMSK,4);
+		}
+		else if (TimerC -> TimerInterruptSelect == TIMER1_Output_CompareB_Match_Interrupt_En)
+		{
+			set_bit(TIMSK,3);
+		}
+		else if (TimerC -> TimerInterruptSelect == TIMER1_Overflow_Interrupt_Enable)
+		{
+			set_bit(TIMSK,2);
+		}
+	} 
+
+}
+void Timer_SetRisingFallingEdge(TimerControl* TimerC,Uint8 Rising_Falling)
+{
+	if (TimerC -> TimerSelect == TIMER1)
+	{
+		set_bit(TCCR1B,Rising_Falling);	
+	}
+
+}
+
+void Timer_ClearFlage(TimerControl* TimerC,Uint8 Flag)
+{
+	if (TimerC -> TimerSelect == TIMER1)
+	{
+		if (Flag == TIMER_ICP_FALG)
+		{
+			set_bit(TIFR ,5);
+		}
+		else if (Flag == TIMER_OVERFLOW_FALG)
+		{
+			set_bit(TIFR ,2);
+		}
+	}
+}
+
 void SetCallBack(TimerControl* TimerC,void (*P_Fn)(void))
 {
 	GlobalP_Fn = P_Fn;
 }
-ISR(TIMER0_OVF_vect)
-{
-	static Uint32 cnt = 0;
-	
-	cnt++;
-	
-	if(cnt == N_OVFlows)
-	{
-		TCNT0 = Init_Value;
-		GlobalP_Fn() ;
-		cnt = 0;
-	}
-}
+// ISR(TIMER0_OVF_vect)
+// {
+// 	static Uint32 cnt = 0;
+// 	
+// 	cnt++;
+// 	
+// 	if(cnt == N_OVFlows)
+// 	{
+// 		TCNT0 = Init_Value;
+// 		GlobalP_Fn() ;
+// 		cnt = 0;
+// 	}
+// }
