@@ -2,11 +2,11 @@
  * Timer.c
  *
  * Created: 3/30/2022 10:49:19 PM
- *  Author: Ali
+ *  Author: mohammed sobh
  */ 
 
 #include "Timer.h"
-
+#include <util/delay.h>
 Uint32 N_OVFlows ;
 Uint32 Init_Value;
 void (*GlobalP_Fn)(void) = null;
@@ -57,24 +57,24 @@ void Timer_Init(TimerControl* TimerC)
 		{
 			set_bit(TCCR0,6);
 			clr_bit(TCCR0,3);
-			if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_NORMAL)
+			if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_NORMAL)
 			{
 				//comp00 4
 				//comp01 5
 				clr_bit(TCCR0,4);
 				clr_bit(TCCR0,5);
 			}
-			else if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_TOGGLE)
+			else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_TOGGLE)
 			{
 				set_bit(TCCR0,4);
 				clr_bit(TCCR0,5);
 			}
-			else if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_CLR)
+			else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_CLR)
 			{
 				set_bit(TCCR0,5);
 				clr_bit(TCCR0,4);
 			}
-			else if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_SET)
+			else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_SET)
 			{
 				set_bit(TCCR0,4);
 				set_bit(TCCR0,5);
@@ -122,7 +122,6 @@ void Timer_Init(TimerControl* TimerC)
 		
 		if (TimerC -> TimerMode == TIMER_NORMAL_MODE)
 		{
-			set_bit(TIMSK,2);
 			TCCR1A = 0X00;
 			
 		}
@@ -246,9 +245,9 @@ void Timer_Init(TimerControl* TimerC)
 						set_bit(TCCR1A,7);
 					}
 // 				else{
-// 					#error "Wrong Timer Comparetor Mode"
-	// 				}
-		}
+// 						#error "Wrong Timer Comparetor Mode"
+//					}
+	}
 		
 // 			else{
 // 				#error "Wrong Timer Comparetor Selected"
@@ -257,7 +256,104 @@ void Timer_Init(TimerControl* TimerC)
 // 		else{
 // 			#error "Wrong Timer Mode Selected"
 // 		}
+}else if (TimerC -> TimerSelect == TIMER2)
+{
+	if (TimerC -> TimerMode == TIMER_NORMAL_MODE)
+	{
+		clr_bit(TCCR2,3); //WGM21
+		clr_bit(TCCR2,6); //WGM20
 	}
+	else if (TimerC -> TimerMode == TIMER_CTC_MODE)
+	{
+		set_bit(TCCR2,3);
+		clr_bit(TCCR2,6);
+		if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_NORMAL)
+		{
+			//comp00 4
+			//comp01 5
+			clr_bit(TCCR2,4);
+			clr_bit(TCCR2,5);
+		}
+		else if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_TOGGLE)
+		{
+			set_bit(TCCR2,4);
+			clr_bit(TCCR2,5);
+		}
+		else if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_CLR)
+		{
+			set_bit(TCCR2,5);
+			clr_bit(TCCR2,4);
+		}
+		else if (TimerC -> TimerCompSelect  == TIMER_COMPARETOR_SET)
+		{
+			set_bit(TCCR2,4);
+			set_bit(TCCR2,5);
+		}
+		// 			else{
+		// 				#error "Wrong Timer Comparetor Selected"
+		// 			}
+	}
+	else if (TimerC -> TimerMode == TIMER_PHASE_CORRECT_8BIT_PWM_MODE)
+	{
+		set_bit(TCCR2,6);
+		clr_bit(TCCR2,3);
+		if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_NORMAL)
+		{
+
+			clr_bit(TCCR2,4);
+			clr_bit(TCCR2,5);
+		}
+		else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_TOGGLE)
+		{
+			set_bit(TCCR2,4);
+			clr_bit(TCCR2,5);
+		}
+		else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_CLR)
+		{
+			set_bit(TCCR2,5);
+			clr_bit(TCCR2,4);
+		}
+		else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_SET)
+		{
+			set_bit(TCCR2,4);
+			set_bit(TCCR2,5);
+		}
+		// 			else{
+		// 				#error "Wrong Timer Comparetor Selected"
+		// 			}
+	}
+	else if (TimerC -> TimerMode == TIMER_FAST_PWM_MODE)
+	{
+		set_bit(TCCR2,3);
+		set_bit(TCCR2,6);
+		if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_NORMAL)
+		{
+			clr_bit(TCCR2,4);
+			clr_bit(TCCR2,5);
+		}
+		else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_TOGGLE)
+		{
+			set_bit(TCCR2,4);
+			clr_bit(TCCR2,5);
+		}
+		else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_CLR)
+		{
+			set_bit(TCCR2,5);
+			clr_bit(TCCR2,4);
+		}
+		else if (TimerC -> TimerCompMode  == TIMER_COMPARETOR_SET)
+		{
+			set_bit(TCCR2,4);
+			set_bit(TCCR2,5);
+		}
+		// 			else{
+		// 				#error "Wrong Timer Comparetor Mode"
+		// 			}
+	}
+	// 		else{
+	// 			#error "Wrong Timer Mode Selected"
+	// 		}
+}
 // 	else{
 // 		#error "Wrong Timer Selected"
 // 	}
@@ -338,6 +434,54 @@ void Timer_Start(TimerControl* TimerC)
 // 			#error "Wrong Timer Prescaler Selected"
 // 		}
 	}
+	else if (TimerC -> TimerSelect == TIMER2){
+		if (TimerC -> TimerPrescaler == TimerPrescaler_0)
+		{
+			set_bit(TCCR2,0);
+			clr_bit(TCCR2,1);
+			clr_bit(TCCR2,2);
+		}
+		else if (TimerC -> TimerPrescaler == TimerPrescaler_8)
+		{
+			clr_bit(TCCR2,0);
+			set_bit(TCCR2,1);
+			clr_bit(TCCR2,2);
+		}
+		
+		else if (TimerC -> TimerPrescaler == TimerPrescaler_32)
+		{
+			set_bit(TCCR2,0);
+			set_bit(TCCR2,1);
+			clr_bit(TCCR2,2);
+		}
+		else if (TimerC -> TimerPrescaler == TimerPrescaler_64)
+		{
+			clr_bit(TCCR2,0);
+			clr_bit(TCCR2,1);
+			set_bit(TCCR2,2);
+		}
+		else if (TimerC -> TimerPrescaler == TimerPrescaler_128)
+		{
+			set_bit(TCCR2,0);
+			clr_bit(TCCR2,1);
+			set_bit(TCCR2,2);
+		}
+		else if (TimerC -> TimerPrescaler == TimerPrescaler_256)
+		{
+			clr_bit(TCCR2,0);
+			set_bit(TCCR2,1);
+			set_bit(TCCR2,2);
+		}
+		else if (TimerC -> TimerPrescaler == TimerPrescaler_1024)
+		{
+			set_bit(TCCR2,0);
+			set_bit(TCCR2,1);
+			set_bit(TCCR2,2);
+		}
+		// 		else{
+		// 			#error "Wrong Timer Prescaler Selected"
+		// 		}
+	}
 	
 }
 
@@ -378,19 +522,19 @@ void Timer_SetINTERUPPT(TimerControl* TimerC,Uint32 InterruptSelect)
 {
 	if (TimerC -> TimerSelect == TIMER1)
 	{
-		if (TimerC -> TimerInterruptSelect == TIMER1_Input_Capture_Interrupt_En)
+		if (InterruptSelect == TIMER1_Input_Capture_Interrupt_En)
 		{
 			set_bit(TIMSK,5);
 		} 
-		else if (TimerC -> TimerInterruptSelect == TIMER1_Output_CompareA_Match_Interrupt_En)
+		else if (InterruptSelect == TIMER1_Output_CompareA_Match_Interrupt_En)
 		{
 			set_bit(TIMSK,4);
 		}
-		else if (TimerC -> TimerInterruptSelect == TIMER1_Output_CompareB_Match_Interrupt_En)
+		else if (InterruptSelect == TIMER1_Output_CompareB_Match_Interrupt_En)
 		{
 			set_bit(TIMSK,3);
 		}
-		else if (TimerC -> TimerInterruptSelect == TIMER1_Overflow_Interrupt_Enable)
+		else if (InterruptSelect == TIMER1_Overflow_Interrupt_Enable)
 		{
 			set_bit(TIMSK,2);
 		}
@@ -401,7 +545,12 @@ void Timer_SetRisingFallingEdge(TimerControl* TimerC,Uint8 Rising_Falling)
 {
 	if (TimerC -> TimerSelect == TIMER1)
 	{
-		set_bit(TCCR1B,Rising_Falling);	
+		if (Rising_Falling)
+		{
+			set_bit(TCCR1B,6);
+		}else
+			clr_bit(TCCR1B,6);
+			
 	}
 
 }

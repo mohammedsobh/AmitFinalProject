@@ -2,7 +2,7 @@
  * Timer.h
  *
  * Created: 3/30/2022 10:49:34 PM
- *  Author: Ali
+ *  Author: mohammed sobh
  */ 
 
 

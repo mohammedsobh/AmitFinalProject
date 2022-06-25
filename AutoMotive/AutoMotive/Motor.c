@@ -5,31 +5,34 @@
  *  Author: eng_s
  */ 
 #include "Motor.h"
-
+TimerControl MotorPWMTimer;
 
 
 void Motor_init(void)
 {
-	
+	MotorPWMTimer.TimerSelect		= TIMER2;
+	MotorPWMTimer.TimerMode			= TIMER_FAST_PWM_MODE;
+	MotorPWMTimer.TimerPrescaler	= TimerPrescaler_128;
+	MotorPWMTimer.TimerCompMode		= TIMER_COMPARETOR_CLR;
 	DIO_SetPinDir(MOTOR_PORT,MOTOR1_PIN0,DIO_PIN_DIR_OUTPUT);
 	DIO_SetPinDir(MOTOR_PORT,MOTOR1_PIN1,DIO_PIN_DIR_OUTPUT);
 	DIO_SetPinDir(MOTOR_PORT,MOTOR2_PIN0,DIO_PIN_DIR_OUTPUT);
 	DIO_SetPinDir(MOTOR_PORT,MOTOR2_PIN1,DIO_PIN_DIR_OUTPUT);
 	DIO_SetPinDir(MOTOREN_PORT,MOTOR1_ENPIN,DIO_PIN_DIR_OUTPUT);
 	DIO_SetPinDir(MOTOREN_PORT,MOTOR2_ENPIN,DIO_PIN_DIR_OUTPUT);
+	Timer_Init(&MotorPWMTimer);
+	Timer_Start(&MotorPWMTimer);
 	
 }
 void Motor_Speet(int speed)
 {
 	if (speed > 10 && speed < 100)
 	{
-		OCR1A = ((255 * speed)/100);
-		OCR1B = ((255 * speed)/100);
+		OCR2 = ((255 * speed)/100);
 	} 
 	else
 	{
-		OCR1A = 1024;
-		OCR1B = 1024;
+		OCR2 = 255;
 	}
 }
 void Motor_foroword(void)

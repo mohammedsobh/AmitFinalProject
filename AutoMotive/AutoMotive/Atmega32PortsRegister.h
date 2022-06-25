@@ -55,6 +55,9 @@
 #define OCR1A  (*(volatile Uint16*)(0x4A))
 #define OCR1B  (*(volatile Uint16*)(0x48))
 #define ICR1   (*(volatile Uint16*)(0x46))
+/****************************** Timer 2 ********************************************/
+#define TCCR2 (*(volatile Uint8*)(0x45))
+#define OCR2  (*(volatile Uint16*)(0x43))
 
 /********************************** I2C ********************************************/
 #define TWDR   (*(volatile Uint8*)(0x03))

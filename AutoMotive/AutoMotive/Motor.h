@@ -8,6 +8,7 @@
 #include "DIO.h"
 #include "Giop.h"
 #include "Atmega32PortsRegister.h"
+#include "Timer.h"
 
 #define MOTOR_PORT		DIO_PORTC
 #define MOTOREN_PORT	DIO_PORTD
@@ -15,8 +16,8 @@
 #define MOTOR1_PIN1		DIO_PIN_4
 #define MOTOR2_PIN0		DIO_PIN_5
 #define MOTOR2_PIN1		DIO_PIN_6
-#define MOTOR1_ENPIN	DIO_PIN_4
-#define MOTOR2_ENPIN	DIO_PIN_5
+#define MOTOR1_ENPIN	DIO_PIN_7
+#define MOTOR2_ENPIN	DIO_PIN_7
 
 #ifndef MOTOR_H_
 #define MOTOR_H_
