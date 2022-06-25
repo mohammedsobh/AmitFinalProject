@@ -145,9 +145,12 @@ int main(void)
 
 ISR(INT0_vect)
 {
+	
 	Motor_Stop();
+	while(DIO_ReadPinVal(IR_PORT,FRONT_IR_PIN));
 }
 ISR(INT1_vect)
 {
 	Motor_Stop();
+	while(DIO_ReadPinVal(IR_PORT,BACK_IR_PIN));
 }
