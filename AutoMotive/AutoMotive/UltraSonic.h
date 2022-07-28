@@ -30,6 +30,6 @@ void UltraSonic_triger(void);
 
 void UltraSonic_SetCaptureEdge(Uint8);
 
-Float64 UltraSonic_Distance(void);
+Uint8 UltraSonic_Distance(void);
 
 #endif /* ULTRASONIC_H_ */

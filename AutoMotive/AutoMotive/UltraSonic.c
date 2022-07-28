@@ -38,10 +38,10 @@ void UltraSonic_SetCaptureEdge(Uint8 Rising_Falling){
 	Timer_SetRisingFallingEdge(&UltraSonicTimer,Rising_Falling);
 }
 
-Float64 UltraSonic_Distance(void)
+Uint8 UltraSonic_Distance(void)
 {
 	long count;
-	double distance;
+	Uint8 distance;
 	UltraSonic_triger();
 	for (int x = 0;x<= 10000;x++)
 	{
@@ -55,7 +55,7 @@ Float64 UltraSonic_Distance(void)
 			while(((TIFR & (1 << 5)) == 0));
 			count = ICR1 + (65535 * TimerOverflow);	/* Take count */
 			/* 16MHz Timer freq, sound speed =343 m/s */
-			distance = (double)count / 933;
+			distance = count / 933;
 			return distance;
 		}
 	}

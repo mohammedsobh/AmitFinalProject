@@ -9,7 +9,8 @@
 void ServoInit(void)
 {
   DIO_SetPinDir(SERVO_PORT,SERVO_PIN,DIO_PIN_DIR_OUTPUT);         
-  DIO_SetPinVal(SERVO_PORT,SERVO_PIN,DIO_PIN_LOW);         
+  DIO_SetPinVal(SERVO_PORT,SERVO_PIN,DIO_PIN_LOW);
+  ServoGoToAngle(0);    
 }
 void ServoGoToAngle(Sint8 Angle)
 {
